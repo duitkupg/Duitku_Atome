@@ -176,7 +176,7 @@ class Payment extends \Duitku\Atome\Model\Method\AbstractPayment
 		
 		$params = array(
              'merchantCode' => $merchantcode,
-             'paymentAmount' => $amount,
+             'paymentAmount' => $paymentAmount,
              'paymentMethod' => 'AT',
 			 'merchantOrderId' =>$orderId,
              'productDetails' => 'Order : '.$orderId,
