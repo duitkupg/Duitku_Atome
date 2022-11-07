@@ -144,7 +144,7 @@ abstract class AbstractActionController extends \Magento\Framework\App\Action\Ac
 	*/
 	protected function setOrderDetails($order){
 		$message = __("Order placed and is now awaiting payment authorization");
-		$order->addStatusToHistory($message);
+		$order->addStatusHistoryComment($message);
 		$order->setIsNotified(false);
 		$order->save();
 	}
@@ -299,11 +299,11 @@ abstract class AbstractActionController extends \Magento\Framework\App\Action\Ac
 	public function sendOrderEmail($order){
 		try{
 			$this->_orderSender->send($order);
-			$order->addStatusToHistory(__("Notified customer about order #%1", $order->getId()))
+			$order->addStatusHistoryComment(__("Notified customer about order #%1", $order->getId()))
 			->setIsCustomerNotified(1)
 			->save();
 		} catch(\Exception $ex){
-			$order->addStatusToHistory(__("Could not send order confirmation for order #%1", $order->getId()))
+			$order->addStatusHistoryComment(__("Could not send order confirmation for order #%1", $order->getId()))
 			->setIsCustomerNotified(0)
 			->save();
 		}
@@ -331,7 +331,7 @@ abstract class AbstractActionController extends \Magento\Framework\App\Action\Ac
 				if($paymentMethodInstance->getConfigData(DuitkuConstants::INSTANT_INVOICE_MAIL, $order->getStoreId()) == 1){
 					$invoice->setEmailSent(1);
 					$this->_invoiceSender->send($invoice);
-					$order->addStatusToHistory(__("Notified customer about invoice #%1", $invoice->getId()))
+					$order->addStatusHistoryComment(__("Notified customer about invoice #%1", $invoice->getId()))
 					->setIsCustomerNotified(1)
 					->save();
 				}
